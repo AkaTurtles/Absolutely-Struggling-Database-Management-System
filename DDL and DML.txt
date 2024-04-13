@@ -1,0 +1,79 @@
+--Database set up
+
+
+CREATE TABLE Trainers (
+	trainer_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,	
+	_username VARCHAR(25) UNIQUE NOT NULL,
+	_password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Admins (
+	admin_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	_username VARCHAR(25) UNIQUE NOT NULL,
+	_password VARCHAR(255) NOT NULL	
+);
+
+CREATE TABLE Training_Sessions (
+	session_id SERIAL PRIMARY KEY,
+	date_time TIMESTAMP NOT NULL,
+	duration FLOAT NOT NULL,
+	description TEXT,
+	trainer_id INTEGER REFERENCES Trainers(trainer_id)
+);
+
+CREATE TABLE Group_Classes (
+	class_id SERIAL PRIMARY KEY,
+	date_time TIMESTAMP NOT NULL,
+	duration FLOAT NOT NULL,
+	description TEXT,
+	trainer_id INTEGER REFERENCES Trainers(trainer_id)
+);
+
+CREATE TABLE Members (
+	member_id SERIAL PRIMARY KEY, 
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	goalWeight FLOAT check (goalWeight > 0),
+	currentWeight FLOAT check (currentWeight > 0),
+	time_days FLOAT check (time_days > 0),
+	session_id INTEGER REFERENCES Training_Sessions(session_id),
+	class_id INTEGER REFERENCES Group_Classes(class_id),
+	_username VARCHAR(25) UNIQUE NOT NULL,
+	_password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Rooms (
+	room_number SERIAL PRIMARY KEY,
+	room_size VARCHAR(6) check (room_size in ('Small', 'Medium', 'Large')),
+	session_id INTEGER REFERENCES Training_Sessions(session_id),
+	class_id INTEGER REFERENCES Group_Classes(class_id)
+);
+
+CREATE TABLE Equipment (
+	equipment_id SERIAL PRIMARY KEY,
+	description TEXT,
+	session_id INTEGER REFERENCES Training_Sessions(session_id),
+	class_id INTEGER REFERENCES Group_Classes(class_id)
+);
+
+
+--Querries
+INSERT INTO Trainers (first_name, last_name, _username, _password) VALUES('Rhys', 'Martin', 'Spectre', 'ertcepS');
+INSERT INTO Trainers (first_name, last_name, _username, _password) VALUES('Azer', 'Lehas', 'Illfang', 'gnafllI');
+INSERT INTO Members (first_name, last_name, goalWeight, time_days, currentWeight, _username, _password) VALUES('Sahel', 'Reza', 170.0, 121, 200.0, 'Turtle', 'eltruT');
+INSERT INTO Members (first_name, last_name, goalWeight, time_days, currentWeight, _username, _password) VALUES('Slate', 'Zeneki', 180.0, 182, 220.0, 'TheDeep', 'peeDehT');
+INSERT INTO Admins (first_name, last_name, _username, _password) VALUES('Rayhan', 'Moraldo', 'Juico', 'ociuJ');
+INSERT INTO Training_Sessions (date_time, duration, description, trainer_id) VALUES('2024-04-01 4:30:00', 1.5, 'Underwater Deadlift', 1);
+INSERT INTO Group_Classes (date_time, duration, description, trainer_id) values ('2024-04-20 4:20:00', 0.5, 'Sword Fighting', 2);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Large', 1, null);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Large', null, null);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Medium', null, 1);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Medium', null, null);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Small', null, null);
+INSERT INTO Rooms (room_size, session_id, class_id) VALUES ('Small', null, null);
+INSERT INTO Equipment (description, session_id, class_id) VALUES('Swords', null, 1);
+INSERT INTO Equipment (description, session_id, class_id) VALUES('Barbells', 1, null);
