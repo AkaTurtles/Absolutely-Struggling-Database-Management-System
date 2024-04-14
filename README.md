@@ -4,7 +4,7 @@ The part each of us cover in the video is not reflective of our contribution on 
 
 Project intructions and demonstration is in the youtube video
 
-Youtube
+(https://www.youtube.com/watch?v=jbnyF7sCNV8)
 
 Sahel Reza (101219693)
 Rayhan Moraldo (101229564)
